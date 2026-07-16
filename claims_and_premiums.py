@@ -1,0 +1,64 @@
+# simulates one year of insurance claims and calculates how much
+# and insurer should charge as a premium
+import numpy as np
+
+# First lets make a function that will simulate the annual loss
+
+def sim_annual_loss(policyholders: int, claim_frequency: float, 
+                    average_claim: float, claim_sd = float):
+    # simulate the number of claims, where we assume that it is poisson distributed
+    number_claims = np.random.poisson(policyholders*claim_frequency)
+    # then we want to find all of the claim sizes, assuming that they
+    # are normally distributed
+    amount_claim = []
+
+    for i in range(number_claims):
+
+        claim_size = np.random.normal(average_claim, claim_sd)
+
+        # as the normal distribution can give negative values, we want to make sure
+        # to repeat the simulation, so that the claim amounts can only be positive
+        while claim_size <0:
+            claim_size = np.random.normal(average_claim, claim_sd)
+
+        amount_claim.append(claim_size)
+    
+    # add all claim amounts to get the total loss
+    total_loss = sum(amount_claim)
+
+    return total_loss
+
+# Then lets make a function that will run a set amount of simulations of the annual loss
+
+def run_simulations(policyholders:int, claim_frequency:float, 
+                    average_claim:float, claim_sd: float, simulations:int):
+    losses = []
+
+    # creating a loop to run the simulation a set amount of times
+    for i in range(simulations):
+        loss = sim_annual_loss(policyholders, claim_frequency, 
+                               average_claim, claim_sd)
+        
+        losses.append(loss)
+
+    return losses
+
+# Now lets calculate the premium per policyholder. I'm going to add an extra percentage,
+# called extra to make the premium a bit higher, to give some extra security to the 
+# insurance company
+def calculate_premium(losses:list, policyholders:int, extra: float):
+    # first calculate the average annual loss
+    ave_loss = np.mean(losses)
+    # then calculate the loss per policyholder
+    loss_per = ave_loss/policyholders
+    # then we want to add that addictional percentage
+    premium = loss_per * (1 + extra)
+
+    return premium
+
+
+
+
+
+
+
