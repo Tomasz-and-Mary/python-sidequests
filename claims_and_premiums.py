@@ -1,6 +1,7 @@
 # simulates one year of insurance claims and calculates how much
 # and insurer should charge as a premium
 import numpy as np
+import matplotlib.pyplot as plt
 
 # First lets make a function that will simulate the annual loss
 
@@ -56,10 +57,32 @@ def calculate_premium(losses:list, policyholders:int, extra: float):
 
     return premium
 
+# Now lets make a histogram of simulated annual losses to show how their spread looks like
+def hist_loss(policyholders:int, claim_frequency:float, 
+                    average_claim:float, claim_sd: float, simulations:int):
+    
+    sim = run_simulations(policyholders, claim_frequency, average_claim,
+                          claim_sd, simulations)
+    
+    mean = np.mean(sim)
+
+    plt.figure()
+    plt.hist(sim, bins=20)
+    plt.title("Histogram of simulated annual losses")
+    plt.xlabel("Loss amount")
+    plt.ylabel("Number of simulations")
+    plt.axvline(x=mean, color="red", linestyle="--")
+    figure = plt.gcf()
+    plt.show()
+    return figure
+
 # runs the examples below only if the file is run directly
 if __name__ == "__main__":
-    print(sim_annual_loss(100, 0.5, 300, 0.1))
+    print(sim_annual_loss(100, 0.5, 300, 30))
     print(calculate_premium([12540.05, 9850.60, 11545, 12000.05, 11750], 100, 0.2))
+    hist_loss(100, 0.5, 300, 30, 1000)
+
+
 
 
 
