@@ -20,13 +20,13 @@ def load_returns(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
 returns_SP = load_returns("^GSPC", "2016-01-01", "2026-01-01")
 
 def investment_sim(days: int, initial_amount: float, historic_returns: pd.DataFrame):
-    cookie = rng.choice(historic_returns, size=(days))
-    return cookie
+    sampled_returns = rng.choice(historic_returns, size=days)
+    compounded_growth_factor = np.prod(1+sampled_returns, axis=None)
+    final_amount = compounded_growth_factor*initial_amount    
+    return final_amount
 
-outcome = investment_sim(10, 100, returns_SP)
-print(len(outcome))
-print(type(outcome))
-print(outcome.size)
+outcome = investment_sim(100, 100, returns_SP)
+print(outcome)
 
     
     
