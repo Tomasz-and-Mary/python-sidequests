@@ -24,7 +24,7 @@ def sim_annual_loss(policyholders: int, claim_frequency: float,
         amount_claim.append(claim_size)
     
     # add all claim amounts to get the total loss
-    total_loss = sum(amount_claim)
+    total_loss = round(sum(amount_claim),2)
 
     return total_loss
 
@@ -55,6 +55,13 @@ def calculate_premium(losses:list, policyholders:int, extra: float):
     premium = loss_per * (1 + extra)
 
     return premium
+
+# runs the examples below only if the file is run directly
+if __name__ == "__main__":
+    print(sim_annual_loss(100, 0.5, 300, 0.1))
+    calculate_premium([12540.05, 9850.60, 11545, 12000.05, 11750], 100, 0.2)
+
+
 
 
 
