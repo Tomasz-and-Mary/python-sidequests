@@ -52,14 +52,14 @@ def calculate_premium(losses:list, policyholders:int, extra: float):
     # then calculate the loss per policyholder
     loss_per = ave_loss/policyholders
     # then we want to add that addictional percentage
-    premium = loss_per * (1 + extra)
+    premium = round(loss_per * (1 + extra), 2)
 
     return premium
 
 # runs the examples below only if the file is run directly
 if __name__ == "__main__":
     print(sim_annual_loss(100, 0.5, 300, 0.1))
-    calculate_premium([12540.05, 9850.60, 11545, 12000.05, 11750], 100, 0.2)
+    print(calculate_premium([12540.05, 9850.60, 11545, 12000.05, 11750], 100, 0.2))
 
 
 
